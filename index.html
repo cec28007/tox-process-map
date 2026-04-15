@@ -3,354 +3,342 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Toxicology Process Map — DRAFT v1</title>
+<title>Toxicology Process Map — Canyon Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f8fafc;
-    --card: #ffffff;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
     --ink: #0f172a;
+    --ink-2: #334155;
     --muted: #64748b;
-    --accent: #2563eb;
-    --accent-dark: #1e40af;
+    --accent: #0f766e;
+    --accent-dark: #0d5e57;
+    --accent-light: #ccfbf1;
     --border: #e2e8f0;
+    --border-strong: #cbd5e1;
     --flag-bg: #fef3c7;
-    --flag-ink: #92400e;
+    --flag-ink: #78350f;
     --placeholder-bg: #ede9fe;
     --placeholder-ink: #5b21b6;
+    --danger: #b91c1c;
+    --warning: #a16207;
+    --sidebar-w: 260px;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
+  html, body { margin: 0; padding: 0; height: 100%; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background: var(--bg);
     color: var(--ink);
     line-height: 1.6;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
   }
+  code, pre { font-family: 'JetBrains Mono', 'SF Mono', Monaco, monospace; }
 
-  /* ===== TOP BAR ===== */
-  .topbar {
+  .app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
+
+  aside.sidebar {
+    background: var(--bg-alt);
+    border-right: 1px solid var(--border);
+    padding: 2rem 1.25rem;
     position: sticky;
     top: 0;
-    z-index: 100;
-    background: var(--card);
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    height: 100vh;
+    overflow-y: auto;
   }
-  .topbar-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0.75rem 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
+  .brand { margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+  .brand-mark {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px;
+    background: var(--accent); color: white;
+    border-radius: 6px; font-weight: 700; font-size: 0.85rem;
+    margin-bottom: 0.75rem;
   }
-  .brand {
-    display: flex;
-    align-items: baseline;
-    gap: 0.75rem;
+  .brand h1 { font-size: 1rem; margin: 0; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+  .brand .subtitle {
+    font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem;
+    display: flex; align-items: center; gap: 0.4rem;
   }
-  .brand h1 {
-    font-size: 1.15rem;
-    margin: 0;
-    color: var(--ink);
-    font-weight: 600;
+  .badge {
+    display: inline-block; background: var(--accent-light); color: var(--accent-dark);
+    padding: 1px 7px; border-radius: 999px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.02em;
   }
-  .brand .tag {
-    font-size: 0.75rem;
-    color: var(--muted);
-    background: #f1f5f9;
-    padding: 2px 8px;
-    border-radius: 999px;
-    font-weight: 500;
+  nav.sections { display: flex; flex-direction: column; gap: 2px; }
+  nav.sections .section-label {
+    font-size: 0.7rem; text-transform: uppercase; color: var(--muted);
+    letter-spacing: 0.08em; font-weight: 600; margin: 1.25rem 0 0.4rem 0.5rem;
   }
-  nav.tabs {
-    display: flex;
-    gap: 0.25rem;
-    flex-wrap: wrap;
+  nav.sections button {
+    background: transparent; border: none; text-align: left; color: var(--ink-2);
+    padding: 0.5rem 0.75rem; border-radius: 6px;
+    font-family: inherit; font-size: 0.92rem; cursor: pointer;
+    transition: all 0.12s; font-weight: 500;
+    display: flex; align-items: center; gap: 0.6rem;
   }
-  nav.tabs button {
-    background: transparent;
-    border: 1px solid transparent;
-    color: var(--muted);
-    padding: 0.4rem 0.85rem;
-    border-radius: 6px;
-    font-size: 0.88rem;
-    cursor: pointer;
-    font-family: inherit;
-    font-weight: 500;
-    transition: all 0.15s;
-  }
-  nav.tabs button:hover {
-    background: #f1f5f9;
-    color: var(--ink);
-  }
-  nav.tabs button.active {
-    background: var(--accent);
-    color: white;
-    border-color: var(--accent);
+  nav.sections button:hover { background: #ffffff; color: var(--ink); }
+  nav.sections button.active { background: var(--accent); color: white; font-weight: 500; }
+  nav.sections button.active .nav-icon { opacity: 1; }
+  .nav-icon { opacity: 0.5; width: 16px; display: inline-block; text-align: center; }
+
+  .sidebar-footer {
+    margin-top: 2rem; padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem; color: var(--muted); line-height: 1.5;
   }
 
-  /* ===== MAIN ===== */
-  main {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 1.5rem;
-  }
-
-  /* ===== VIEWS ===== */
+  main { overflow-x: hidden; }
   .view { display: none; }
-  .view.active { display: block; }
+  .view.active { display: block; animation: fadeIn 0.18s ease; }
+  @keyframes fadeIn { from {opacity:0; transform: translateY(4px);} to {opacity:1; transform:none;} }
 
-  /* ===== MAP VIEW (default landing) ===== */
-  #view-map {
-    display: block;
+  .hero {
+    padding: 2.5rem 3rem 1.5rem;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    border-bottom: 1px solid var(--border);
   }
-  .map-header {
-    margin-bottom: 1rem;
+  .hero .eyebrow {
+    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;
   }
-  .map-header h2 {
-    font-size: 1.6rem;
-    margin: 0 0 0.25rem;
-    color: var(--ink);
-  }
-  .map-header p {
-    margin: 0;
-    color: var(--muted);
-    font-size: 0.95rem;
-  }
-  .reading-guide {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    margin: 1rem 0;
+  .hero h2 { font-size: 2rem; margin: 0 0 0.5rem; letter-spacing: -0.02em; font-weight: 700; color: var(--ink); }
+  .hero p.lede { font-size: 1.05rem; color: var(--ink-2); margin: 0; max-width: 760px; }
+
+  .legend {
+    display: flex; gap: 2rem; flex-wrap: wrap;
+    padding: 1rem 3rem;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--border);
     font-size: 0.85rem;
   }
-  .guide-item { display: flex; align-items: center; gap: 0.4rem; }
-  .guide-swatch {
-    display: inline-block;
-    width: 30px;
-    height: 0;
-    border-top: 2.5px solid var(--ink);
-  }
-  .guide-swatch.bold { border-top-width: 4px; border-top-color: #111; }
-  .guide-swatch.dotted { border-top-style: dotted; border-top-color: var(--muted); }
-  .guide-swatch.dashed { border-top-style: dashed; border-top-color: #c026d3; }
+  .legend-item { display: flex; align-items: center; gap: 0.5rem; color: var(--ink-2); }
+  .legend-swatch { display: inline-block; width: 32px; height: 0; border-top: 2.5px solid var(--ink); }
+  .legend-swatch.bold { border-top-width: 3.5px; border-top-color: #111; }
+  .legend-swatch.dotted { border-top-style: dotted; border-top-color: var(--muted); }
 
-  .mermaid-wrap {
-    background: var(--card);
+  .map-canvas { background: var(--bg); padding: 2rem 3rem; }
+  .map-toolbar {
+    display: flex; gap: 0.5rem; align-items: center;
+    margin-bottom: 1rem; font-size: 0.85rem; color: var(--muted);
+  }
+  .map-toolbar button {
+    background: white; border: 1px solid var(--border);
+    padding: 0.35rem 0.75rem; border-radius: 6px;
+    cursor: pointer; font-family: inherit; font-size: 0.85rem;
+    color: var(--ink-2); transition: all 0.12s; font-weight: 500;
+  }
+  .map-toolbar button:hover { border-color: var(--accent); color: var(--accent); }
+  .map-toolbar .zoom-level {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+    padding: 0 0.5rem; min-width: 52px; text-align: center;
+  }
+  .mermaid-container {
+    background: white;
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 1.5rem;
-    overflow-x: auto;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    overflow: auto;
+    max-width: 100%;
     min-height: 500px;
   }
-  .mermaid { text-align: center; }
-  .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .mermaid { text-align: left; transform-origin: 0 0; transition: transform 0.15s; display: inline-block; }
+  .mermaid svg { display: block; }
 
-  .drill-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 0.75rem;
-    margin: 1.5rem 0 0;
+  .drill-section {
+    padding: 2rem 3rem 3rem;
+    background: var(--bg-alt);
+    border-top: 1px solid var(--border);
   }
+  .drill-section h3 {
+    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); font-weight: 600; margin: 0 0 1rem;
+  }
+  .drill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.75rem; }
   .drill-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1rem;
-    cursor: pointer;
-    transition: all 0.15s;
-    text-align: left;
-    font-family: inherit;
-    font-size: 0.9rem;
+    background: white; border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.15rem 1.25rem;
+    cursor: pointer; transition: all 0.15s;
+    text-align: left; font-family: inherit;
+    display: flex; align-items: flex-start; gap: 0.8rem;
   }
   .drill-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+    border-color: var(--accent); transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(15, 118, 110, 0.08);
   }
-  .drill-card strong {
-    display: block;
-    color: var(--accent-dark);
-    font-size: 0.95rem;
-    margin-bottom: 0.25rem;
+  .drill-card .icon { font-size: 1.2rem; flex-shrink: 0; }
+  .drill-card .content strong {
+    display: block; color: var(--ink); font-size: 0.95rem;
+    margin-bottom: 0.2rem; font-weight: 600;
   }
-  .drill-card span {
-    color: var(--muted);
-    font-size: 0.85rem;
-  }
+  .drill-card .content span { color: var(--muted); font-size: 0.83rem; line-height: 1.4; }
 
-  /* ===== DETAIL VIEWS ===== */
-  .detail-header {
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border);
+  .detail { max-width: 920px; padding: 2.5rem 3rem 4rem; }
+  .detail-eyebrow {
+    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;
   }
-  .detail-header h2 {
-    font-size: 1.6rem;
-    margin: 0 0 0.25rem;
-    color: var(--accent-dark);
+  .detail h2 { font-size: 1.9rem; margin: 0 0 0.5rem; letter-spacing: -0.02em; font-weight: 700; }
+  .detail p.lede { font-size: 1.05rem; color: var(--ink-2); margin: 0 0 2rem; }
+  .detail h3 {
+    font-size: 1.15rem; margin: 2rem 0 0.75rem;
+    font-weight: 600; color: var(--ink); letter-spacing: -0.005em;
   }
-  .detail-header p { color: var(--muted); margin: 0; }
-  .back-link {
-    display: inline-block;
-    color: var(--accent);
-    text-decoration: none;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-    cursor: pointer;
-  }
-  .back-link:hover { text-decoration: underline; }
-
-  h3 {
-    font-size: 1.15rem;
-    margin-top: 1.75rem;
-    color: var(--ink);
-  }
+  .detail p, .detail li { color: var(--ink-2); }
+  .detail strong { color: var(--ink); }
+  .detail ul, .detail ol { padding-left: 1.25rem; }
+  .detail li { margin: 0.35rem 0; }
 
   .flag, .placeholder {
-    padding: 1px 6px;
-    border-radius: 3px;
-    font-size: 0.85em;
-    font-weight: 600;
-    font-family: "SF Mono", Monaco, monospace;
+    padding: 1px 7px; border-radius: 4px;
+    font-size: 0.82em; font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
   }
   .flag { background: var(--flag-bg); color: var(--flag-ink); }
   .placeholder { background: var(--placeholder-bg); color: var(--placeholder-ink); }
 
   table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1rem 0;
-    background: var(--card);
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    font-size: 0.92rem;
+    width: 100%; border-collapse: collapse;
+    margin: 1rem 0 1.5rem;
+    background: white; border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; font-size: 0.92rem;
   }
   th {
-    background: #f1f5f9;
-    text-align: left;
-    padding: 0.75rem 1rem;
-    font-size: 0.88rem;
-    border-bottom: 2px solid var(--border);
+    background: var(--bg-alt); text-align: left;
+    padding: 0.75rem 1rem; font-size: 0.82rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    color: var(--muted); border-bottom: 1px solid var(--border);
   }
   td {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
+    padding: 0.85rem 1rem; border-bottom: 1px solid var(--border);
+    vertical-align: top; color: var(--ink-2);
   }
+  td strong { color: var(--ink); }
   tr:last-child td { border-bottom: none; }
-  code, pre {
-    font-family: "SF Mono", Monaco, Consolas, monospace;
-    font-size: 0.88em;
-  }
+
   pre {
-    background: #1e293b;
-    color: #e2e8f0;
-    padding: 1rem;
-    border-radius: 6px;
-    overflow-x: auto;
-    line-height: 1.5;
+    background: #0f172a; color: #e2e8f0;
+    padding: 1.1rem 1.25rem; border-radius: 8px;
+    overflow-x: auto; line-height: 1.55; font-size: 0.85rem;
   }
   code {
-    background: #f1f5f9;
-    padding: 1px 5px;
-    border-radius: 3px;
+    background: var(--bg-alt); padding: 1px 6px;
+    border-radius: 4px; font-size: 0.88em;
+    color: var(--accent-dark); border: 1px solid var(--border);
   }
-  pre code { background: transparent; padding: 0; color: inherit; }
-  ul, ol { padding-left: 1.5rem; }
-  li { margin: 0.3rem 0; }
+  pre code { background: transparent; padding: 0; color: inherit; border: none; }
 
   .question-group {
-    background: var(--card);
-    border-left: 3px solid #e5e7eb;
-    padding: 1rem 1.25rem;
-    margin: 0.75rem 0;
-    border-radius: 0 6px 6px 0;
+    background: white; border: 1px solid var(--border);
+    border-left: 3px solid var(--border-strong);
+    padding: 1.1rem 1.3rem; margin: 1rem 0;
+    border-radius: 0 8px 8px 0;
   }
-  .question-group.must { border-left-color: #dc2626; }
-  .question-group.nice { border-left-color: #ca8a04; }
-  .question-group.deferred { border-left-color: #9ca3af; }
-  .question-group h4 { margin: 0 0 0.5rem; font-size: 1rem; }
+  .question-group.must { border-left-color: var(--danger); }
+  .question-group.nice { border-left-color: var(--warning); }
+  .question-group.deferred { border-left-color: var(--muted); }
+  .question-group h4 {
+    margin: 0 0 0.75rem; font-size: 0.95rem;
+    font-weight: 600; color: var(--ink);
+  }
+  .priority-tag {
+    display: inline-block; font-size: 0.7rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    padding: 2px 8px; border-radius: 4px;
+    margin-left: 0.5rem; vertical-align: middle;
+  }
+  .priority-tag.must { background: #fee2e2; color: var(--danger); }
+  .priority-tag.nice { background: #fef3c7; color: var(--warning); }
+  .priority-tag.deferred { background: #f1f5f9; color: var(--muted); }
 
   .status-box {
-    background: var(--card);
-    border-left: 4px solid var(--accent);
-    padding: 1rem 1.25rem;
-    border-radius: 0 6px 6px 0;
-    margin: 1rem 0;
-    font-size: 0.92rem;
+    background: var(--accent-light); border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem; border-radius: 0 8px 8px 0;
+    margin: 1rem 0; font-size: 0.92rem; color: var(--accent-dark);
   }
 
-  footer {
-    margin-top: 3rem;
-    padding: 1.5rem;
-    border-top: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 0.85rem;
-    text-align: center;
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+    aside.sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+    .hero, .legend, .map-canvas, .drill-section, .detail { padding-left: 1.25rem; padding-right: 1.25rem; }
   }
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-inner">
+<div class="app">
+
+  <aside class="sidebar">
     <div class="brand">
-      <h1>Toxicology Process Map</h1>
-      <span class="tag">DRAFT v1</span>
+      <div class="brand-mark">CL</div>
+      <h1>Toxicology Process</h1>
+      <div class="subtitle">Canyon Labs <span class="badge">Draft v1</span></div>
     </div>
-    <nav class="tabs" id="tabs">
-      <button data-view="map" class="active">Process Map</button>
-      <button data-view="identifiers">Identifiers</button>
-      <button data-view="buckets">Service Buckets</button>
-      <button data-view="billing">Billing</button>
-      <button data-view="lims">LIMS Impact</button>
-      <button data-view="questions">Open Questions</button>
-      <button data-view="next">Next Steps</button>
+
+    <nav class="sections" id="nav">
+      <div class="section-label">Overview</div>
+      <button data-view="map" class="active"><span class="nav-icon">◎</span>Process Map</button>
+
+      <div class="section-label">Supporting Detail</div>
+      <button data-view="identifiers"><span class="nav-icon">#</span>Identifiers</button>
+      <button data-view="buckets"><span class="nav-icon">▦</span>Service Buckets</button>
+      <button data-view="billing"><span class="nav-icon">$</span>Billing Triggers</button>
+      <button data-view="lims"><span class="nav-icon">⧉</span>LIMS Impact</button>
+
+      <div class="section-label">Open Items</div>
+      <button data-view="questions"><span class="nav-icon">?</span>Open Questions</button>
+      <button data-view="next"><span class="nav-icon">→</span>Next Steps</button>
     </nav>
-  </div>
-</div>
 
-<main>
-
-  <!-- ============ MAP VIEW (DEFAULT) ============ -->
-  <section id="view-map" class="view active">
-    <div class="map-header">
-      <h2>End-to-End Process — Swim Lanes</h2>
-      <p>Process flows left to right. Each horizontal lane is an owner or system. Click any tab above or drill-down card below for supporting detail.</p>
+    <div class="sidebar-footer">
+      Prepared by Clint Christensen<br>
+      Based on discussions with Donna, 2026-04-14<br>
+      + QA-396 R-1 Submission Form
     </div>
+  </aside>
 
-    <div class="reading-guide">
-      <div class="guide-item"><span class="guide-swatch bold"></span> Hand-off between lanes</div>
-      <div class="guide-item"><span class="guide-swatch"></span> Flow within a lane</div>
-      <div class="guide-item"><span class="guide-swatch dotted"></span> Uses a resource</div>
-      <div class="guide-item"><span class="guide-swatch dashed"></span> Triggers billing</div>
-    </div>
+  <main>
 
-    <div class="mermaid-wrap">
-<div class="mermaid">
+    <section id="view-map" class="view active">
+      <div class="hero">
+        <div class="eyebrow">End-to-End Process</div>
+        <h2>Toxicology Study Lifecycle</h2>
+        <p class="lede">From customer quote through final report delivery. Swim lanes track who owns each step. Click any section in the left nav for supporting detail.</p>
+      </div>
+
+      <div class="legend">
+        <div class="legend-item"><span class="legend-swatch bold"></span> Hand-off between lanes</div>
+        <div class="legend-item"><span class="legend-swatch"></span> Flow within a lane</div>
+        <div class="legend-item"><span class="legend-swatch dotted"></span> Uses resource / triggers billing</div>
+      </div>
+
+      <div class="map-canvas">
+        <div class="map-toolbar">
+          <button id="zoom-out">−</button>
+          <span class="zoom-level" id="zoom-level">100%</span>
+          <button id="zoom-in">+</button>
+          <button id="zoom-reset">Reset</button>
+          <span style="margin-left: auto; font-size: 0.8rem;">Scroll the canvas horizontally to see the full lifecycle.</span>
+        </div>
+
+        <div class="mermaid-container" id="mermaid-container">
+<div class="mermaid" id="mermaid-diagram">
 flowchart LR
-    subgraph SALES["SALES (Salesforce)"]
+    subgraph SALES["SALES — Salesforce"]
       direction LR
-      S1[Customer request] --> S2[Quote drafted] --> S3[Quote signed<br/>PO issued] --> S4[Hand-off to<br/>Tox team]
+      S1[Customer<br/>request] --> S2[Quote<br/>drafted] --> S3[Quote signed<br/>PO issued] --> S4[Hand-off<br/>to Tox]
     end
 
     subgraph PM["TOX PM — Katie / Donna"]
       direction LR
-      P1[Receive hand-off] --> P2[Add to GLP<br/>Assignment List]
-      P2 --> P3[Assign GLP#,<br/>Study Director]
-      P3 --> P4[Send customer:<br/>Biocomp Q + QA-396]
+      P1[Receive<br/>hand-off] --> P2[Add to GLP<br/>Assignment List]
+      P2 --> P3[Assign GLP #,<br/>Study Director]
+      P3 --> P4[Send Biocomp Q<br/>+ QA-396]
       P4 --> P5[Customer<br/>returns forms]
-      P5 --> P6[Populate<br/>protocol template]
+      P5 --> P6[Populate<br/>protocol]
     end
 
     subgraph SD["STUDY DIRECTOR"]
@@ -364,31 +352,31 @@ flowchart LR
 
     subgraph LAB["LAB OPS / TECHS"]
       direction LR
-      L1[Test article<br/>received<br/>Tally assigns<br/>Sample ID] --> L2[Order<br/>animals]
-      L2 --> L3[Animals received<br/>Animal Tracks<br/>assigns IDs]
+      L1[Test article<br/>received<br/>Tally = Sample ID] --> L2[Order<br/>animals]
+      L2 --> L3[Animals received<br/>Animal Tracks ID]
       L3 --> L4[Acclimation<br/>4-5 days]
       L4 --> L5[LAUNCH<br/>first dose]
-      L5 --> L6[Create extracts<br/>polar/non-polar<br/>t=0/14/21]
-      L6 --> L7[In-life<br/>observations<br/>endpoints]
-      L7 --> L8[Draft report] --> L9[Final report]
+      L5 --> L6[Create extracts<br/>t=0/14/21]
+      L6 --> L7[In-life obs<br/>+ endpoints]
+      L7 --> L8[Draft<br/>report] --> L9[Final<br/>report]
     end
 
-    subgraph REG["REG / RESOURCES"]
+    subgraph REG["REG &amp; RESOURCES"]
       direction LR
-      R1[IACUC Protocols]
-      R2[Animal Tracks]
+      R1[IACUC<br/>Protocols]
+      R2[Animal Tracks<br/>rest periods]
       R3[Rees Env<br/>Monitoring]
-      R4[Morgan's animal<br/>availability sheet]
+      R4[Animal availability<br/>spreadsheet]
     end
 
     subgraph BILL["BILLING — target state"]
       direction LR
-      B1[M1: Protocol<br/>signed] --> B2[M2: Test article<br/>received] --> B3[M3: Launch] --> B4[M4: Final report]
+      B1[M1<br/>Protocol signed] --> B2[M2<br/>Article received] --> B3[M3<br/>Launch] --> B4[M4<br/>Report delivered]
     end
 
-    subgraph COMPLEX["COMPLEX STUDIES (placeholder)"]
+    subgraph COMPLEX["COMPLEX STUDIES — placeholder"]
       direction LR
-      C1[8-10/yr — PG, PopBio, Idera<br/>Custom design, change orders<br/>Process TBD]
+      C1[8-10/yr<br/>P&amp;G, PopBio, Idera<br/>Custom design<br/>Process TBD]
     end
 
     S4 ==> P1
@@ -422,257 +410,287 @@ flowchart LR
     class B1,B2,B3,B4 bill
     class C1 complex
 </div>
-    </div>
+        </div>
+      </div>
 
-    <h3>Drill down</h3>
-    <div class="drill-cards">
-      <button class="drill-card" data-view="identifiers">
-        <strong>🔢 Identifiers</strong>
-        <span>Quote, GLP#, Sample ID, Animal ID — how they relate</span>
-      </button>
-      <button class="drill-card" data-view="buckets">
-        <strong>🧪 Service Buckets</strong>
-        <span>BET, Cytotox, Biocomp, Complex studies</span>
-      </button>
-      <button class="drill-card" data-view="billing">
-        <strong>💰 Billing Triggers</strong>
-        <span>Proposed 4 milestones + rationale</span>
-      </button>
-      <button class="drill-card" data-view="lims">
-        <strong>🗂️ LIMS Impact</strong>
-        <span>Modeling implications for the LIMS build</span>
-      </button>
-      <button class="drill-card" data-view="questions">
-        <strong>❓ Open Questions</strong>
-        <span>Follow-ups for Donna, grouped by priority</span>
-      </button>
-      <button class="drill-card" data-view="next">
-        <strong>➡️ Next Steps</strong>
-        <span>Path from v1 → v2 → LIMS spec</span>
-      </button>
-    </div>
-  </section>
+      <div class="drill-section">
+        <h3>Drill into supporting detail</h3>
+        <div class="drill-grid">
+          <button class="drill-card" data-view="identifiers">
+            <span class="icon">#</span>
+            <div class="content">
+              <strong>Identifiers</strong>
+              <span>Quote, GLP, Sample ID, Animal ID — how they relate</span>
+            </div>
+          </button>
+          <button class="drill-card" data-view="buckets">
+            <span class="icon">▦</span>
+            <div class="content">
+              <strong>Service Buckets</strong>
+              <span>BET, Cytotox, Biocomp, and complex studies</span>
+            </div>
+          </button>
+          <button class="drill-card" data-view="billing">
+            <span class="icon">$</span>
+            <div class="content">
+              <strong>Billing Triggers</strong>
+              <span>Four proposed milestones with rationale</span>
+            </div>
+          </button>
+          <button class="drill-card" data-view="lims">
+            <span class="icon">⧉</span>
+            <div class="content">
+              <strong>LIMS Impact</strong>
+              <span>Modeling implications for the LIMS build</span>
+            </div>
+          </button>
+          <button class="drill-card" data-view="questions">
+            <span class="icon">?</span>
+            <div class="content">
+              <strong>Open Questions</strong>
+              <span>Follow-ups for Donna, grouped by priority</span>
+            </div>
+          </button>
+          <button class="drill-card" data-view="next">
+            <span class="icon">→</span>
+            <div class="content">
+              <strong>Next Steps</strong>
+              <span>Path from draft to LIMS specification</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
 
-  <!-- ============ IDENTIFIERS ============ -->
-  <section id="view-identifiers" class="view">
-    <a class="back-link" data-view="map">← Back to process map</a>
-    <div class="detail-header">
-      <h2>Identifier Model</h2>
-      <p>Five identifiers come together on each biocomp-type study. Understanding their relationships is central to LIMS modeling.</p>
-    </div>
-    <table>
-      <thead><tr><th>Identifier</th><th>Issued by</th><th>Issued when</th><th>Purpose</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Quote # / PO #</strong></td><td>Sales (Salesforce)</td><td>Customer signs quote + issues PO</td><td>Commercial anchor</td></tr>
-        <tr><td><strong>Product Code</strong> (a.k.a. Test Code)</td><td>Pre-defined catalog (TX0xxx)</td><td>Each line item on the quote</td><td>Identifies <em>what test</em> (GPMT, MEM elution, pyrogen, etc.)</td></tr>
-        <tr><td><strong>GLP Number</strong></td><td>Test Facility Management</td><td>When study is assigned (GLP Assignment List)</td><td>Identifies the study as a GLP study; may not be needed long-term</td></tr>
-        <tr><td><strong>Sample ID</strong> = Test Article #</td><td>Tally (homegrown, all ROC labs)</td><td>At receipt of physical test article</td><td>Tracks the actual material; sample = test article</td></tr>
-        <tr><td><strong>Animal ID</strong></td><td>Animal Tracks (homegrown)</td><td>At animal receipt / assignment to a test</td><td>Per-individual-animal traceability for in-vivo tests; weights, rest periods, study history</td></tr>
-      </tbody>
-    </table>
+    <section id="view-identifiers" class="view">
+      <div class="detail">
+        <div class="detail-eyebrow">Supporting Detail</div>
+        <h2>Identifier Model</h2>
+        <p class="lede">Five identifiers come together on each biocomp-type study. Understanding how they relate is central to LIMS modeling.</p>
 
-    <h3>Nesting (draft)</h3>
-<pre><code>Quote/PO
+        <table>
+          <thead><tr><th>Identifier</th><th>Issued by</th><th>Issued when</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Quote # / PO #</strong></td><td>Sales (Salesforce)</td><td>Customer signs quote + issues PO</td><td>Commercial anchor</td></tr>
+            <tr><td><strong>Product Code</strong> (a.k.a. Test Code)</td><td>Pre-defined catalog (TX0xxx)</td><td>Each line item on the quote</td><td>Identifies which test (GPMT, MEM elution, pyrogen, etc.)</td></tr>
+            <tr><td><strong>GLP Number</strong></td><td>Test Facility Management</td><td>When study is assigned on the GLP Assignment List</td><td>Identifies the study as GLP; may not be needed long-term</td></tr>
+            <tr><td><strong>Sample ID</strong> = Test Article #</td><td>Tally (homegrown, all ROC labs)</td><td>At receipt of physical test article</td><td>Tracks the physical material; sample and test article are synonymous</td></tr>
+            <tr><td><strong>Animal ID</strong></td><td>Animal Tracks (homegrown)</td><td>At animal receipt or assignment to a test</td><td>Per-individual animal traceability for in-vivo tests — carries weights, rest periods, study history</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Nesting (draft)</h3>
+<pre><code>Quote / PO
  └── Product Code (line item)  ←→  GLP # (study)
         └── Sample ID / Test Article #   (1..N devices per study)
-               └── Extract(s)            (polar/non-polar × time points 0/14/21)
+               └── Extract(s)            (polar / non-polar × time points 0 / 14 / 21)
                       └── Aliquots       (per test, per endpoint timepoint)
                              └── Animal ID(s)   (for in-vivo endpoints)
                                     └── Observations / endpoint readings</code></pre>
-    <p><span class="flag">[?]</span> When a biocomp quote has 5 line items that all share extracts and devices, is there a single umbrella "Study #" above Product Code? Or does the GLP # serve that role?</p>
-  </section>
 
-  <!-- ============ BUCKETS ============ -->
-  <section id="view-buckets" class="view">
-    <a class="back-link" data-view="map">← Back to process map</a>
-    <div class="detail-header">
-      <h2>Service Buckets</h2>
-      <p>Three standardized buckets + one placeholder for custom work.</p>
-    </div>
+        <p><span class="flag">[?]</span> When a biocomp quote has 5 line items sharing extracts and devices, is there a single umbrella Study # above Product Code? Or does the GLP # serve that role?</p>
+      </div>
+    </section>
 
-    <h3>Bucket A — BET (Bacterial Endotoxins)</h3>
-    <ul>
-      <li>One line item = one test = one result.</li>
-      <li>ROC pools; SLC runs individually.</li>
-      <li>Destructive; extraction per PYT-8 or method validation (see QA-396 §B).</li>
-      <li><strong>Simple case for LIMS.</strong></li>
-    </ul>
+    <section id="view-buckets" class="view">
+      <div class="detail">
+        <div class="detail-eyebrow">Supporting Detail</div>
+        <h2>Service Buckets</h2>
+        <p class="lede">Three standardized service types plus one placeholder bucket for custom, non-standard work.</p>
 
-    <h3>Bucket B — Cytotox (MEM Elution / Direct Contact)</h3>
-    <ul>
-      <li>Structurally same as BET for intake/billing.</li>
-      <li>Used as screening AND as a line inside biocomp packages.</li>
-      <li>Extraction per QA-396 §B (Elution) or §C (Direct Contact).</li>
-    </ul>
+        <h3>Bucket A — BET (Bacterial Endotoxins)</h3>
+        <ul>
+          <li>One line item equals one test equals one result.</li>
+          <li>ROC pools samples; SLC runs individually.</li>
+          <li>Destructive; extraction per PYT-8 or method validation (QA-396 §B).</li>
+          <li><strong>Simple case for LIMS.</strong></li>
+        </ul>
 
-    <h3>Bucket C — Biocompatibility (the complex one)</h3>
-    <p>Typical "Big 5":</p>
-    <ol>
-      <li>Intracutaneous Irritation</li>
-      <li>Systemic Injection</li>
-      <li>Guinea Pig Maximization Test (GPMT)</li>
-      <li>MEM Elution / Cytotox</li>
-      <li>Material-Mediated Pyrogen</li>
-    </ol>
-    <p><strong>Resource sharing:</strong> ~13 devices typical → 6 for top 3 (share polar + non-polar × 3 time points) + 1 for MEM + 5 for pyrogen + 1 spare.</p>
-    <p><strong>Each test still:</strong> has its own product code, protocol, invoice line, and report.</p>
+        <h3>Bucket B — Cytotox (MEM Elution / Direct Contact)</h3>
+        <ul>
+          <li>Structurally same as BET for intake and billing.</li>
+          <li>Used as screening and as a line item inside biocomp packages.</li>
+          <li>Extraction per QA-396 §B (Elution) or §C (Direct Contact).</li>
+        </ul>
 
-    <h3>Bucket D — Complex / Custom Studies <span class="placeholder">[PLACEHOLDER]</span></h3>
-    <ul>
-      <li>8–10/yr (P&amp;G, PopBio, Idera, etc.).</li>
-      <li>Heavy change orders; milestone-based billing already in use.</li>
-      <li>Out of scope for v1 detail — shown on the map as a lane; process to be captured later.</li>
-    </ul>
-  </section>
+        <h3>Bucket C — Biocompatibility (the complex one)</h3>
+        <p>Typical "Big 5" tests in a biocomp package:</p>
+        <ol>
+          <li>Intracutaneous Irritation</li>
+          <li>Systemic Injection</li>
+          <li>Guinea Pig Maximization Test (GPMT)</li>
+          <li>MEM Elution / Cytotox</li>
+          <li>Material-Mediated Pyrogen</li>
+        </ol>
+        <p><strong>Resource sharing.</strong> ~13 devices typical: 6 for the top three tests (share polar + non-polar × 3 time points), 1 for MEM, 5 for pyrogen, 1 spare.</p>
+        <p><strong>But each test still has</strong> its own product code, protocol, invoice line, and report.</p>
 
-  <!-- ============ BILLING ============ -->
-  <section id="view-billing" class="view">
-    <a class="back-link" data-view="map">← Back to process map</a>
-    <div class="detail-header">
-      <h2>Billing Trigger Design (proposed)</h2>
-      <p>Current pain: flat 50% up-front creates ~$200K stuck when test articles never arrive (2025 biocomp backlog).</p>
-    </div>
-    <table>
-      <thead><tr><th>Milestone</th><th>Event</th><th>Trigger source</th><th>Rationale</th></tr></thead>
-      <tbody>
-        <tr><td>M1</td><td>Protocol completed &amp; customer-signed</td><td>LIMS protocol status = "Signed"</td><td>Real work delivered; avoids stuck-article problem</td></tr>
-        <tr><td>M2</td><td>Test article received <strong>OR</strong> animal order placed</td><td>Tally Sample ID issued</td><td>Material cost commitment</td></tr>
-        <tr><td>M3</td><td>Launch (first dose)</td><td>LIMS study status = "In-life started"</td><td>Animal AP hits net-30; ~10-day gap from animal invoice to launch is the cash-flow concern</td></tr>
-        <tr><td>M4</td><td>Final report delivered</td><td>LIMS report status = "Released"</td><td>Closeout</td></tr>
-      </tbody>
-    </table>
-    <p><span class="flag">[?]</span> % split across milestones TBD with Donna + Finance.</p>
-  </section>
+        <h3>Bucket D — Complex / Custom Studies <span class="placeholder">[PLACEHOLDER]</span></h3>
+        <ul>
+          <li>8–10 per year (P&amp;G, PopBio, Idera, etc.).</li>
+          <li>Heavy change-order traffic; milestone-based billing already in use.</li>
+          <li>Out of scope for v1 detail — shown as a placeholder lane on the map; process to be captured later.</li>
+        </ul>
+      </div>
+    </section>
 
-  <!-- ============ LIMS ============ -->
-  <section id="view-lims" class="view">
-    <a class="back-link" data-view="map">← Back to process map</a>
-    <div class="detail-header">
-      <h2>LIMS Modeling Implications</h2>
-      <p>First-cut observations to feed the LIMS data model.</p>
-    </div>
-    <ol>
-      <li><strong>Shared test-article pool per study</strong> — LIMS needs a "test article inventory" concept where one receipt feeds multiple product-code tests. Lindsey World calls this S-number → child-sample tree; paper analog today is TAD sheet QA-2.</li>
-      <li><strong>Time-point-based sub-sampling</strong> — extracts are recreated at t=0/14/21 (not aliquoted from a frozen stock). LIMS must model "extract creation event" as a distinct record per time point.</li>
-      <li><strong>Animal traceability bridge</strong> — in-vivo endpoints must link to Animal Tracks records. <span class="flag">[?]</span> Animal Tracks is homegrown; API should be feasible.</li>
-      <li><strong>Environmental monitoring bridge</strong> — Rees probe data should be pullable into the study record. <span class="flag">[?]</span> Rees API/export format TBD.</li>
-      <li><strong>IACUC protocol link</strong> — each study carries an IACUC protocol # (separate from the study protocol). <span class="flag">[?]</span> confirm whether captured as a field today.</li>
-      <li><strong>Endpoints vary by protocol</strong> (confirmed) — endpoint schema must be protocol-driven, not product-code-driven. Templated + study-specific forms both exist today.</li>
-      <li><strong>Complex studies</strong> — keep as a separate study type with a minimal data model; don't force into the standardized flow in v1.</li>
-    </ol>
-  </section>
+    <section id="view-billing" class="view">
+      <div class="detail">
+        <div class="detail-eyebrow">Supporting Detail</div>
+        <h2>Billing Trigger Design</h2>
+        <p class="lede">Current pain: flat 50% up-front creates about $200K stuck when test articles never arrive (2025 biocomp backlog). Proposed target state: four event-driven milestones.</p>
 
-  <!-- ============ QUESTIONS ============ -->
-  <section id="view-questions" class="view">
-    <a class="back-link" data-view="map">← Back to process map</a>
-    <div class="detail-header">
-      <h2>Open Questions — Follow-up with Donna</h2>
-      <p>Grouped by priority for the v2 revision.</p>
-    </div>
+        <table>
+          <thead><tr><th>Milestone</th><th>Event</th><th>Trigger source</th><th>Rationale</th></tr></thead>
+          <tbody>
+            <tr><td><strong>M1</strong></td><td>Protocol completed &amp; customer-signed</td><td>LIMS protocol status = Signed</td><td>Real work delivered; avoids stuck-article problem</td></tr>
+            <tr><td><strong>M2</strong></td><td>Test article received <em>or</em> animal order placed</td><td>Tally Sample ID issued</td><td>Material cost commitment</td></tr>
+            <tr><td><strong>M3</strong></td><td>Launch (first dose)</td><td>LIMS study status = In-life started</td><td>Animal AP hits net-30; ~10-day gap from animal invoice to launch is the cash-flow concern</td></tr>
+            <tr><td><strong>M4</strong></td><td>Final report delivered</td><td>LIMS report status = Released</td><td>Closeout</td></tr>
+          </tbody>
+        </table>
 
-    <div class="question-group must">
-      <h4>Must-answer (blocks v2 of map)</h4>
-      <ol>
-        <li><strong>Identifier hierarchy:</strong> umbrella Study # above the 5 product codes, or GLP # = umbrella, or each product code its own study?</li>
-        <li><strong>GLP Assignment List:</strong> one master spreadsheet or one row per study? Who has edit rights?</li>
-        <li><strong>Test article receiving:</strong> formal receiving/inspection step between "box arrives" and "Tally issues Sample ID"? Chain-of-custody doc?</li>
-        <li><strong>Protocol templates:</strong> Qualio or S: drive? How many distinct templates?</li>
-        <li><strong>IACUC protocol ↔ study protocol link:</strong> captured as a field on the study today, or implicit by test type?</li>
-        <li><strong>"Launch" = "in-life start"?</strong> Or distinct events?</li>
-      </ol>
-    </div>
+        <p><span class="flag">[?]</span> Percentage split across the four milestones to be confirmed with Donna and Finance.</p>
+      </div>
+    </section>
 
-    <div class="question-group nice">
-      <h4>Nice-to-have for v2</h4>
-      <ol start="7">
-        <li>Tally — can it expose test numbers + sample IDs via API/export to a future LIMS?</li>
-        <li>Animal Tracks — export/API path?</li>
-        <li>Rees — export/API path for environmental monitoring data?</li>
-        <li>TAD sheet QA-2 — per-study or per-extract-batch?</li>
-        <li>Endpoint catalog — canonical list per product code anywhere, even if protocols override?</li>
-        <li>Billing % split across the 4 proposed milestones.</li>
-      </ol>
-    </div>
+    <section id="view-lims" class="view">
+      <div class="detail">
+        <div class="detail-eyebrow">Supporting Detail</div>
+        <h2>LIMS Modeling Implications</h2>
+        <p class="lede">First-cut observations to feed the LIMS data model for Toxicology.</p>
 
-    <div class="question-group deferred">
-      <h4>Deferred (Complex studies)</h4>
-      <ol start="13">
-        <li>What % of revenue comes from Bucket D? Is it worth a v2 pass, or leave as manual indefinitely?</li>
-      </ol>
-    </div>
-  </section>
+        <ol>
+          <li><strong>Shared test-article pool per study.</strong> LIMS needs a test-article inventory concept where one receipt feeds multiple product-code tests. Lindsey World calls this the S-number → child-sample tree; the paper analog today is TAD sheet QA-2.</li>
+          <li><strong>Time-point-based sub-sampling.</strong> Extracts are recreated at t=0 / 14 / 21 — not aliquoted from a frozen stock. LIMS must model "extract creation event" as a distinct record per time point.</li>
+          <li><strong>Animal traceability bridge.</strong> In-vivo endpoints must link to Animal Tracks records. <span class="flag">[?]</span> Animal Tracks is homegrown; an API or export path should be feasible.</li>
+          <li><strong>Environmental monitoring bridge.</strong> Rees probe data should be pullable into the study record (today it is fetched manually). <span class="flag">[?]</span> Rees API / export format TBD.</li>
+          <li><strong>IACUC protocol link.</strong> Each study carries an IACUC protocol number separate from the study protocol. <span class="flag">[?]</span> Confirm whether captured as a field today.</li>
+          <li><strong>Endpoints vary by protocol</strong> (confirmed by Donna). Endpoint schema must be protocol-driven, not product-code-driven. Templated and study-specific forms both exist today.</li>
+          <li><strong>Complex studies.</strong> Keep as a separate study type with a minimal data model; do not force them into the standardized flow in v1.</li>
+        </ol>
+      </div>
+    </section>
 
-  <!-- ============ NEXT STEPS ============ -->
-  <section id="view-next" class="view">
-    <a class="back-link" data-view="map">← Back to process map</a>
-    <div class="detail-header">
-      <h2>Next Steps</h2>
-      <p>Path from this draft toward a LIMS specification.</p>
-    </div>
-    <ol>
-      <li>Review this draft with Donna; fill in <span class="flag">[?]</span> items.</li>
-      <li>Revise to v2 with identifier hierarchy locked.</li>
-      <li>Decompose biocomp into a detailed sub-map (extract creation → aliquot → test → endpoint).</li>
-      <li>Spec LIMS data model against v2.</li>
-      <li>Spec billing automation triggers against v2 + Finance input.</li>
-    </ol>
-    <div class="status-box">
-      <strong>Source inputs:</strong> two discussions with Donna (2026-04-14) + QA-396 R-1 Toxicology Supplemental Sample Submission Form.
-    </div>
-  </section>
+    <section id="view-questions" class="view">
+      <div class="detail">
+        <div class="detail-eyebrow">Open Items</div>
+        <h2>Open Questions for Donna</h2>
+        <p class="lede">Grouped by priority. Items in the red group block the v2 revision.</p>
 
-  <footer>
-    Canyon Labs Toxicology — DRAFT v1 — prepared by Clint Christensen, 2026-04-14
-  </footer>
+        <div class="question-group must">
+          <h4>Must-answer <span class="priority-tag must">Blocks v2</span></h4>
+          <ol>
+            <li><strong>Identifier hierarchy.</strong> Umbrella Study # above the 5 product codes, or does the GLP # play that role, or is each product code its own study?</li>
+            <li><strong>GLP Assignment List.</strong> One master spreadsheet or one row per study? Who has edit rights?</li>
+            <li><strong>Test article receiving.</strong> Formal receiving / inspection step between "box arrives" and "Tally issues Sample ID"? Chain-of-custody doc?</li>
+            <li><strong>Protocol templates.</strong> Qualio or S: drive? How many distinct templates?</li>
+            <li><strong>IACUC protocol ↔ study protocol link.</strong> Captured as a field on the study today, or implicit by test type?</li>
+            <li><strong>"Launch" = "in-life start"?</strong> Or distinct events?</li>
+          </ol>
+        </div>
 
-</main>
+        <div class="question-group nice">
+          <h4>Nice-to-have <span class="priority-tag nice">For v2</span></h4>
+          <ol start="7">
+            <li>Tally — can it expose test numbers and sample IDs via API or export to a future LIMS?</li>
+            <li>Animal Tracks — export or API path?</li>
+            <li>Rees — export or API path for the environmental-monitoring data?</li>
+            <li>TAD sheet QA-2 — per-study or per-extract-batch?</li>
+            <li>Endpoint catalog — a canonical list per product code anywhere, even if protocols override?</li>
+            <li>Billing percentage split across the four proposed milestones.</li>
+          </ol>
+        </div>
+
+        <div class="question-group deferred">
+          <h4>Deferred <span class="priority-tag deferred">Complex studies</span></h4>
+          <ol start="13">
+            <li>What percentage of revenue comes from Bucket D? Worth a v2 pass, or leave as manual indefinitely?</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-next" class="view">
+      <div class="detail">
+        <div class="detail-eyebrow">Open Items</div>
+        <h2>Next Steps</h2>
+        <p class="lede">Path from this draft toward a full LIMS specification.</p>
+
+        <ol>
+          <li>Review this draft with Donna; fill in <span class="flag">[?]</span> items.</li>
+          <li>Revise to v2 with identifier hierarchy locked.</li>
+          <li>Decompose biocomp into a detailed sub-map (extract creation → aliquot → test → endpoint).</li>
+          <li>Spec LIMS data model against v2.</li>
+          <li>Spec billing-automation triggers against v2 with Finance input.</li>
+        </ol>
+
+        <div class="status-box">
+          <strong>Source inputs:</strong> two discussions with Donna (2026-04-14) plus QA-396 R-1 Toxicology Supplemental Sample Submission Form.
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
 
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.esm.min.mjs';
   mermaid.initialize({
     startOnLoad: false,
-    theme: 'default',
+    theme: 'base',
+    themeVariables: {
+      fontFamily: "'Inter', sans-serif",
+      fontSize: '14px',
+      primaryColor: '#ffffff',
+      primaryBorderColor: '#cbd5e1',
+      primaryTextColor: '#0f172a',
+      lineColor: '#475569',
+      clusterBkg: '#f8fafc',
+      clusterBorder: '#cbd5e1'
+    },
     flowchart: {
       curve: 'basis',
       htmlLabels: true,
-      useMaxWidth: true,
-      nodeSpacing: 40,
-      rankSpacing: 50
+      useMaxWidth: false,
+      nodeSpacing: 35,
+      rankSpacing: 55,
+      padding: 12
     },
     securityLevel: 'loose'
   });
-  // Render explicitly after DOM is ready (more reliable than startOnLoad under iframe viewers)
   await mermaid.run({ querySelector: '.mermaid' });
-  window.__mermaidReady = true;
-</script>
-<script>
 
+  let zoom = 1;
+  const diagram = document.getElementById('mermaid-diagram');
+  const zoomLevel = document.getElementById('zoom-level');
+  function setZoom(z) {
+    zoom = Math.max(0.4, Math.min(2.5, z));
+    diagram.style.transform = `scale(${zoom})`;
+    zoomLevel.textContent = Math.round(zoom * 100) + '%';
+  }
+  document.getElementById('zoom-in').addEventListener('click', () => setZoom(zoom + 0.1));
+  document.getElementById('zoom-out').addEventListener('click', () => setZoom(zoom - 0.1));
+  document.getElementById('zoom-reset').addEventListener('click', () => setZoom(1));
+</script>
+
+<script>
   function showView(name) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     const target = document.getElementById('view-' + name);
     if (target) target.classList.add('active');
-    document.querySelectorAll('#tabs button').forEach(b => {
+    document.querySelectorAll('#nav button').forEach(b => {
       b.classList.toggle('active', b.dataset.view === name);
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
     history.replaceState(null, '', '#' + name);
   }
-
-  // tab clicks
-  document.querySelectorAll('#tabs button').forEach(btn => {
+  document.querySelectorAll('#nav button').forEach(btn => {
     btn.addEventListener('click', () => showView(btn.dataset.view));
   });
-  // drill cards + back links
-  document.querySelectorAll('[data-view]').forEach(el => {
-    if (!el.closest('#tabs')) {
-      el.addEventListener('click', (e) => {
-        e.preventDefault();
-        showView(el.dataset.view);
-      });
-    }
+  document.querySelectorAll('.drill-card').forEach(card => {
+    card.addEventListener('click', () => showView(card.dataset.view));
   });
-
-  // deep-link support
   if (location.hash) {
     const name = location.hash.replace('#', '');
     if (document.getElementById('view-' + name)) showView(name);
